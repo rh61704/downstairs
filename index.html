@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>downstairs</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style>
+body{ 
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+ }
+ canvas{
+
+	background: #eee; 
+
+ }
+</style>
+</head>
+<body>
+
+<canvas id="app" style="width: 800px;height: 500px;">
+	
+</canvas>
+<button onclick="start()">start</button>
+<button onclick="stop()">stop</button>
+<script>
+var canvas = document.getElementById("app");
+var ctx = canvas.getContext("2d");
+var ctx2 = canvas.getContext("2d");
+var StairX = canvas.width/2;
+var StairY = canvas.height;
+var ballX = canvas.width/2;
+var ballY = canvas.height;
+var rightPressed = false;
+var leftPressed = false;
+var touched = true;
+var level = 0 ;
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+
+var stair = function(StairX,StairY,color){
+
+	this.StairX = StairX;
+	this.StairY = StairY;
+	this.color = color ; 
+
+}
+
+
+function drawStairs(StairX,StairY,color){
+
+	ctx.beginPath();
+    ctx.rect(StairX, StairY, 70, 5);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.closePath();   
+    //return this.StairX;
+}
+
+
+stair.prototype.draw = function(){
+	//ctx.clearRect(this.StairX, this.StairY, 70, 6);
+	if(this.StairY>0){
+		drawStairs(this.StairX,this.StairY,this.color);
+		this.StairY--;
+	 }else{
+	   	this.StairY = canvas.height;  
+	   	this.StairX = Math.abs( Math.round(canvas.width*Math.random()-70) );   
+	  }
+}
+
+var ball = function(x,y){
+
+	this.x = x ;
+	this.y = y ;
+
+}
+
+
+
+drawBall =  function(x,y) {
+	//this.x = x ;
+	//this.y = y ;
+    ctx.beginPath();
+    ctx.arc(x,y, 5, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+
+}
+
+
+ball.prototype.changeBall =  function(){
+
+	if(rightPressed){
+
+		this.x +=3;
+
+	}else if(leftPressed){
+
+		this.x -=3;
+
+	}
+	
+	if(touched){
+
+		if(this.y>0){
+			//drawStairs(this.x,this.y);
+			//this.drawBall(this.x,this.y);
+			this.y--;
+		 }else{
+		   	this.y = canvas.height;   
+		 }
+
+	}else{
+
+		if(this.y<=canvas.height){
+			this.y++;
+		}else{
+
+		gameover();
+		this.y = 0;  
+
+		}
+
+	}
+
+	drawBall(this.x,this.y);
+
+}
+
+
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+	
+    if(e.keyCode == 39) {
+        rightPressed = false;     
+    }
+    else if(e.keyCode == 37) {
+       leftPressed = false;     
+    }
+}
+
+//console.log(Math.round(canvas.width*Math.random()));
+
+/*function fresh(){
+
+setInterval(draw,10);
+
+}*/
+
+//setTimeout(fresh,500);
+
+var Stair = new stair(canvas.width/2,canvas.height,'red'); 
+var anotherStair = new stair(canvas.width/2,canvas.height,'blue'); 
+var anotherStair2 = new stair(canvas.width/2,canvas.height,'yellow'); 
+var Ball = new ball(Stair.StairX+35,Stair.StairY-4);
+//var anotherStair ,anotherStair2
+var i = 0;
+
+
+function drawing(){
+
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	Stair.draw();
+	Ball.changeBall();
+
+	ctx.font = "10px Arial";
+    ctx.fillStyle = "#adadad";
+    ctx.fillText('B '+ level +' F', 0 , 10);
+
+	if(i%200==0){
+
+		level++;
+
+	}
+	
+	if(i>50){
+		//console.log('draw1');
+		anotherStair.draw();
+	}
+
+	if(i>100){
+		//console.log('draw2');
+		anotherStair2.draw();
+	}
+	//console.log(i);
+		//console.log(50);
+
+
+	if(Ball.y===Stair.StairY-4||Ball.y===Stair.StairY-5){
+		if(Ball.x>Stair.StairX&&Ball.x<Stair.StairX+70){
+			//console.log(1);
+			touched = true;
+		}else{
+			touched = false;
+		}
+
+	}else if(Ball.y===anotherStair.StairY-4||Ball.y===anotherStair.StairY-5){
+		//console.log([anotherStair.StairY]);
+	//console.log([Ball.y]);
+		//console.log(2);
+		if(Ball.x>anotherStair.StairX&&Ball.x<anotherStair.StairX+70){
+			//console.log(2);
+			touched = true;
+		}else{
+			touched = false;
+		}
+
+	}else if(Ball.y===anotherStair2.StairY-4||Ball.y===anotherStair2.StairY-5){
+
+		if(Ball.x>anotherStair2.StairX&&Ball.x<anotherStair2.StairX+70){
+			//console.log(3);
+			touched = true;
+		}else{
+			touched = false;
+		}
+
+	}else{
+
+		touched = false;
+
+	}
+
+	
+	i++;
+
+}
+
+let timer;
+
+function stop(){
+
+clearInterval(timer);
+
+};
+
+function start(){
+
+timer = setInterval(drawing,15);
+
+};
+
+
+function gameover(){
+
+	clearInterval(timer);
+	alert('game over!');
+	window.location.reload();
+
+}
+
+
+
+//setInterval(anotherStair.draw, 15)
+//console.log(Stair.drawStairs());
+
+</script>
+
+</body>
+
+</html>
