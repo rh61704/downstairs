@@ -106,11 +106,11 @@ drawBall =  function(x,y) {
 
 ball.prototype.changeBall =  function(){
 
-	if(rightPressed){
+	if(rightPressed&&this.x<canvas.width-7){
 
 		this.x +=3;
 
-	}else if(leftPressed){
+	}else if(leftPressed&&this.x>7){
 
 		this.x -=3;
 
