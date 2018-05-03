@@ -9,10 +9,19 @@ body{
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction:column;
+
  }
  canvas{
 
 	background: #eee; 
+
+ }
+ button{
+ 	
+ 	width: 100px;
+ 	height:30px;
+ 	padding: 5px;
 
  }
 </style>
@@ -22,8 +31,10 @@ body{
 <canvas id="app" style="width: 800px;height: 500px;">
 	
 </canvas>
+<div>
 <button onclick="start()">start</button>
 <button onclick="stop()">stop</button>
+</div>
 <script>
 var canvas = document.getElementById("app");
 var ctx = canvas.getContext("2d");
