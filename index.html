@@ -174,8 +174,8 @@ setInterval(draw,10);
 //setTimeout(fresh,500);
 
 var Stair = new stair(canvas.width/2,canvas.height,'red'); 
-var anotherStair = new stair(canvas.width/2,canvas.height,'blue'); 
-var anotherStair2 = new stair(canvas.width/2,canvas.height,'yellow'); 
+var anotherStair = new stair(Math.abs( Math.round(canvas.width*Math.random()-70) ),canvas.height,'blue'); 
+var anotherStair2 = new stair(Math.abs( Math.round(canvas.width*Math.random()-70) ),canvas.height,'yellow'); 
 var Ball = new ball(Stair.StairX+35,Stair.StairY-4);
 //var anotherStair ,anotherStair2
 var i = 0;
@@ -197,12 +197,12 @@ function drawing(){
 
 	}
 	
-	if(i>50){
+	if(i>55){
 		//console.log('draw1');
 		anotherStair.draw();
 	}
 
-	if(i>100){
+	if(i>110){
 		//console.log('draw2');
 		anotherStair2.draw();
 	}
