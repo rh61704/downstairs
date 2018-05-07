@@ -28,8 +28,7 @@ body{
 </head>
 <body>
 
-<canvas id="app" style="width: 800px;height: 500px;">
-	
+<canvas id="app" style="width: 720px;height: 450px;">	
 </canvas>
 <div>
 <button onclick="start()">start</button>
@@ -91,10 +90,16 @@ var ball = function(x,y){
 }
 
 
-
 drawBall =  function(x,y) {
 	//this.x = x ;
 	//this.y = y ;
+	//var img = new Image();
+	/*var img = new Image();
+	img.addEventListener("load", function() {
+  // execute drawImage statements here
+  	ctx.drawImage(img,x-30,y-42,55,50);
+	}, false);   // Create new img element
+	img.src = './rao.png';*/
     ctx.beginPath();
     ctx.arc(x,y, 5, 0, Math.PI*2);
     ctx.fillStyle = "#0095DD";
@@ -173,9 +178,9 @@ setInterval(draw,10);
 
 //setTimeout(fresh,500);
 
-var Stair = new stair(canvas.width/2,canvas.height,'red'); 
-var anotherStair = new stair(Math.abs( Math.round(canvas.width*Math.random()-70) ),canvas.height,'blue'); 
-var anotherStair2 = new stair(Math.abs( Math.round(canvas.width*Math.random()-70) ),canvas.height,'yellow'); 
+var Stair = new stair(canvas.width/2,canvas.height,'#0095DD'); 
+var anotherStair = new stair(Math.abs( Math.round(canvas.width*Math.random()-70) ),canvas.height,'#0095DD'); 
+var anotherStair2 = new stair(Math.abs( Math.round(canvas.width*Math.random()-70) ),canvas.height,'#0095DD'); 
 var Ball = new ball(Stair.StairX+35,Stair.StairY-4);
 //var anotherStair ,anotherStair2
 var i = 0;
@@ -253,13 +258,17 @@ let timer;
 
 function stop(){
 
-clearInterval(timer);
+	clearInterval(timer);
 
 };
 
 function start(){
 
-timer = setInterval(drawing,12);
+	if(timer!==null){
+		clearInterval(timer);
+	}
+
+	timer = setInterval(drawing,12);
 
 };
 
